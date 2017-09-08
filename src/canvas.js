@@ -3,7 +3,7 @@ export default class Canvas {
         this.canvasId = canvasId;
         this.canvas = document.getElementById(canvasId);
         this.pixelRatio = 1.0; // window.devicePixelRatio;
-        this.resizeCanvas();
+//        this.resizeCanvas();
 
         this.isRendering = false;
 

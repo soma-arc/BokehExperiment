@@ -31,7 +31,7 @@ export default class Canvas3d extends Canvas {
         this.initRenderTextures();
         this.texturesFrameBuffer = this.gl.createFramebuffer();
 
-        this.isKeepingSampling = false;
+        this.isKeepingSampling = true;
         this.isRenderingLowRes = false;
         this.renderTimer = undefined;
     }
@@ -109,11 +109,11 @@ export default class Canvas3d extends Canvas {
     }
 
     render() {
+        if (this.numSamples >= this.maxSamples) return;
         this.renderToTexture(this.renderTextures,
                              this.canvas.width, this.canvas.height);
         this.renderTexturesToCanvas(this.renderTextures);
-        if (this.isKeepingSampling &&
-            this.numSamples < this.maxSamples) {
+        if (this.isKeepingSampling) {
             this.numSamples++;
         }
     }
