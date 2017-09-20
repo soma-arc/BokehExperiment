@@ -1,3 +1,5 @@
+import assert from 'power-assert';
+
 export default class Vec3 {
     /**
      *
@@ -9,6 +11,7 @@ export default class Vec3 {
         this.x = x;
         this.y = y
         this.z = z;
+        assert.ok(!this.hasNans())
     }
 
     /**
@@ -72,12 +75,55 @@ export default class Vec3 {
         return (this.x * this.x + this.y * this.y + this.z * this.z);
     }
 
+
+    /**
+     *
+     * @returns {Boolean}
+     */
+    hasNans() {
+        return Number.isNaN(this.x) || Number.isNaN(this.y) || Number.isNaN(this.z);
+    }
+
+    /**
+     *
+     * @returns {Vec3}
+     */
+    abs() {
+        return new Vec3(Math.abs(this.x), Math.abs(this.y), Math.abs(this.z));
+    }
+
+    /**
+     *
+     * @returns {Vec3}
+     */
+    opposite() {
+        return new Vec3(-this.x, -this.y, -this.z)
+    }
+
     /**
      *
      * @returns {Vec3}
      */
     normalize() {
         return this.scale(1.0 / this.length());
+    }
+
+    /**
+     *
+     * @param {Vec3} v
+     * @returns {Number}
+     */
+    static minComponent(v) {
+        return Math.min(v.x, Math.min(v.y, v.z));
+    }
+
+    /**
+     *
+     * @param {Vec3} v
+     * @returns {Number}
+     */
+    static maxComponent(v) {
+        return Math.max(v.x, Math.max(v.y, v.z));
     }
 
     /**
@@ -114,50 +160,16 @@ export default class Vec3 {
     /**
      *
      * @param {Vec3} v1
-     * @param {Vec3} v2
-     * @returns {number}
+     * @returns {[Vec3]}
      */
-    static distance(v1, v2) {
-        const l = v1.sub(v2);
-        return Math.sqrt(l.x * l.x + l.y * l.y);
-    }
-
-    /**
-     *
-     * @param {number} radians
-     * @returns {number}
-     */
-    rotateAroundX(radians) {
-        const cosRad = Math.cos(radians);
-        const sinRad = Math.sin(radians);
-        return new Vec3(this.x,
-                        cosRad * this.y + -sinRad * this.z,
-                        sinRad * this.y + cosRad * this.z);
-    }
-
-    /**
-     *
-     * @param {number} radians
-     * @returns {number}
-     */
-    rotateAroundY(radians) {
-        const cosRad = Math.cos(radians);
-        const sinRad = Math.sin(radians);
-        return new Vec3(cosRad * this.x + sinRad * this.z,
-                        this.y,
-                        -sinRad * this.x + cosRad * this.z);
-    }
-
-    /**
-     *
-     * @param {number} radians
-     * @returns {number}
-     */
-    rotateAroundZ(radians) {
-        const cosRad = Math.cos(radians);
-        const sinRad = Math.sin(radians);
-        return new Vec3(cosRad * this.x - sinRad * this.y,
-                        sinRad * this.x + cosRad * this.y,
-                        this.z);
+    static coordinateSystem(v1) {
+        let v2;
+        if (Math.abs(v1.x) > Math.abs(v1.y)) {
+            v2 = new Vec3(-v1.z, 0, v1.x).scale(1 / Math.sqrt(v1.x * v1.x + v1.z * v1.z));
+        } else {
+            v2 = new Vec3(0, v1.z, -v1.y).scale(1 / Math.sqrt(v1.y * v1.y + v1.z * v1.z))
+        }
+        const v3 = Vec3.cross(v1, v2);
+        return [v1, v1, v2];
     }
 }

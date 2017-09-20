@@ -1,9 +1,15 @@
 import assert from 'power-assert';
 
 export default class Vec2 {
+    /**
+     *
+     * @param {number} x
+     * @param {number} y
+     */
     constructor(x, y) {
         this.x = x;
         this.y = y;
+        assert.ok(!this.hasNans())
     }
 
     /**
@@ -80,8 +86,32 @@ export default class Vec2 {
             Math.abs(this.y - v.y <= Vec2.EPSILON);
     }
 
+    /**
+     *
+     * @returns {Vec2}
+     */
+    abs() {
+        return new Vec2(Math.abs(this.x), Math.abs(this.y));
+    }
+
+    /**
+     *
+     * @returns {Vec2}
+     */
+    opposite() {
+        return new Vec2(-this.x, -this.y)
+    }
+
     cloneDeeply() {
         return new Vec2(this.x, this.y);
+    }
+
+    /**
+     *
+     * @returns {Boolean}
+     */
+    hasNans() {
+        return Number.isNaN(this.x) || Number.isNaN(this.y);
     }
 
     /**
@@ -105,13 +135,20 @@ export default class Vec2 {
 
     /**
      *
-     * @param {Vec2} v1
-     * @param {Vec2} v2
+     * @param {Vec2} v
      * @returns {Number}
      */
-    static distance(v1, v2) {
-        const l = v1.sub(v2);
-        return Math.sqrt(l.x * l.x + l.y * l.y);
+    static minComponent(v) {
+        return Math.min(v.x, v.y);
+    }
+
+    /**
+     *
+     * @param {Vec2} v
+     * @returns {Number}
+     */
+    static maxComponent(v) {
+        return Math.max(v.x, v.y);
     }
 
     static get EPSILON() {
