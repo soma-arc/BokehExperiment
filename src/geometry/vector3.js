@@ -37,7 +37,7 @@ export default class Vec3 {
      * @param {Vec3} v
      * @returns {Vec3}
      */
-    prod(v) {
+    mult(v) {
         return new Vec3(this.x * v.x, this.y * v.y, this.z * v.z);
     }
 
@@ -74,7 +74,6 @@ export default class Vec3 {
     lengthSq() {
         return (this.x * this.x + this.y * this.y + this.z * this.z);
     }
-
 
     /**
      *
@@ -159,6 +158,29 @@ export default class Vec3 {
 
     /**
      *
+     * @param {Vec3} v
+     * @returns {Boolean}
+     */
+    eq(v) {
+        return Math.abs(this.x - v.x) <= Vec3.THRESHOLD &&
+            Math.abs(this.y - v.y <= Vec3.THRESHOLD) &&
+            Math.abs(this.z - v.z <= Vec3.THRESHOLD);
+    }
+
+    /**
+     *
+     * @param {Vec2} v1
+     * @param {Vec2} v2
+     * @returns {Boolean}
+     */
+    static eq(v1, v2) {
+        return Math.abs(v1.x - v2.x) <= Vec3.THRESHOLD &&
+            Math.abs(v1.y - v2.y) <= Vec3.THRESHOLD &&
+            Math.abs(v1.z - v2.z <= Vec3.THRESHOLD);
+    }
+
+    /**
+     *
      * @param {Vec3} v1
      * @returns {[Vec3]}
      */
@@ -170,6 +192,10 @@ export default class Vec3 {
             v2 = new Vec3(0, v1.z, -v1.y).scale(1 / Math.sqrt(v1.y * v1.y + v1.z * v1.z))
         }
         const v3 = Vec3.cross(v1, v2);
-        return [v1, v1, v2];
+        return [v1, v2, v3];
+    }
+
+    static get THRESHOLD() {
+        return 0.0000001;
     }
 }

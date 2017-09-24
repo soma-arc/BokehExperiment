@@ -32,7 +32,7 @@ export default class Vec2 {
      * @param {Vec2} v
      * @returns {Vec2}
      */
-    prod(v) {
+    mult(v) {
         return new Vec2(this.x * v.x, this.y * v.y);
     }
 
@@ -45,7 +45,7 @@ export default class Vec2 {
     }
 
     /**
-     * @param {Number} v
+     * @param {Number} k
      * @returns {Vec2}
      */
     scale(k) {
@@ -82,8 +82,19 @@ export default class Vec2 {
      * @returns {Boolean}
      */
     eq(v) {
-        return Math.abs(this.x - v.x) <= Vec2.EPSILON &&
-            Math.abs(this.y - v.y <= Vec2.EPSILON);
+        return Math.abs(this.x - v.x) <= Vec2.THRESHOLD &&
+            Math.abs(this.y - v.y <= Vec2.THRESHOLD);
+    }
+
+    /**
+     *
+     * @param {Vec2} v1
+     * @param {Vec2} v2
+     * @returns {Boolean}
+     */
+    static eq(v1, v2) {
+        return Math.abs(v1.x - v2.x) <= Vec2.THRESHOLD &&
+            Math.abs(v1.y - v2.y <= Vec2.THRESHOLD);
     }
 
     /**
@@ -151,7 +162,7 @@ export default class Vec2 {
         return Math.max(v.x, v.y);
     }
 
-    static get EPSILON() {
-        return 0.00001;
+    static get THRESHOLD() {
+        return 0.0000001;
     }
 }
