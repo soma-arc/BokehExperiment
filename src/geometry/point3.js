@@ -1,5 +1,5 @@
-const assert =  require('power-assert');
 import Vec3 from './vector3.js';
+const assert = require('power-assert');
 
 export default class Point3 {
     /**
@@ -25,7 +25,7 @@ export default class Point3 {
     }
 
     /**
-     * 
+     *
      * @param {Vec3} v
      * @returns {Point3}
      */
@@ -43,9 +43,9 @@ export default class Point3 {
     }
 
     /**
-     * 
+     *
      * @param {Vec3} v
-     * @returns {Point3} 
+     * @returns {Point3}
      */
     subVec(v) {
         return new Point3(this.x - v.x, this.y - v.y, this.z - v.z);
@@ -77,18 +77,18 @@ export default class Point3 {
     scale(k) {
         return new Point3(this.x * k, this.y * k, this.z * k);
     }
-    
+
     /**
-     * 
-     * @returns {Boolean} 
+     *
+     * @returns {Boolean}
      */
     hasNans() {
         return Number.isNaN(this.x) || Number.isNaN(this.y) || Number.isNaN(this.z);
     }
 
     /**
-     * 
-     * @returns {Point3} 
+     *
+     * @returns {Point3}
      */
     abs() {
         return new Point3(Math.abs(this.x), Math.abs(this.y), Math.abs(this.z));

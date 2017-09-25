@@ -6,10 +6,10 @@ export default class Ray {
      *
      * @param {Point3} o
      * @param {Vec3} d
-     * @param {Number} tMax
+     * @param {Number} tmax
      * @param {Number} time
      */
-    constructor(o, d, tMax, time) {
+    constructor(o, d, tmax, time) {
         this.o = o;
         this.d = d;
         this.tmax = tmax;
@@ -22,6 +22,6 @@ export default class Ray {
      * @returns {Point3}
      */
     point(t) {
-        return this.o.addVec(d.scale(t));
+        return this.o.addVec(this.d.scale(t));
     }
 }
