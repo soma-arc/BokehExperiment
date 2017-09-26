@@ -202,7 +202,34 @@ export default class Transform {
                                        nUp.x, nUp.y, nUp.z, 0,
                                        dir.x, dir.y, dir.z, 0,
                                        pos.x, pos.y, pos.z, 1);
-        return new Transform(cameraToWorld.inverse(), cameraToWorld())
+        return new Transform(cameraToWorld.inverse(), cameraToWorld)
+    }
+
+    /**
+     * Camera to Screen
+     * @param {Number} fovDegrees
+     * @param {Number} near
+     * @param {Number} far
+     * @returns {Transform}
+     */
+    static perspective(fovDegrees, near, far) {
+        const pers = new Mat4(1, 0, 0, 0,
+                              0, 1, 0, 0,
+                              0, 0, far / (far - near), 1,
+                              0, 0, -far * near / (far - near), 0);
+        const invTan = 1 / Math.tan(Radians(fovDegrees) / 2);
+        return Transform.scale(invTan, invTan, 1).mult(Transform.fromMat4(pers));
+    }
+
+    static ortho(near, far) {
+        return Transform.scale(1, 1, 1 / (far - near)).mult(Transform.translate(0, 0, -near));
+    }
+
+    static rasterToScreen(width, height) {
+        const screenToRaster = Transform.scale(width, height, 1)
+              .mult(Transform.scale(1 / 2, 1 / -2, 1))
+              .mult(Transform.translate(1, -1, 0));
+        return screenToRaster.inverse();
     }
 
     /**
@@ -237,8 +264,6 @@ export default class Transform {
     }
 
     /**
-     * @param {Mat4} m
-     * @param {Mat4} mInv
      * @return {Transform}
      */
     static get IDENTITY() {
@@ -277,7 +302,11 @@ export default class Transform {
                            m10, m11, m12, m13,
                            m20, m21, m22, m23,
                            m30, m31, m32, m33);
-        const mInv = this.m.inverse();
-        return new Mat4(m, mInv);
+        const mInv = m.inverse();
+        return new Transform(m, mInv);
+    }
+
+    static fromMat4(m) {
+        return new Transform(m, m.inverse());
     }
 }
