@@ -226,9 +226,17 @@ export default class Transform {
     }
 
     static rasterToScreen(width, height) {
-        const screenToRaster = Transform.scale(width, height, 1)
-              .mult(Transform.scale(1 / 2, 1 / -2, 1))
-              .mult(Transform.translate(1, -1, 0));
+        const aspect = width / height;
+        let screenToRaster;
+        if (aspect > 1.0) {
+            screenToRaster = Transform.scale(width, height, 1)
+                .mult(Transform.scale(1 / (2 * aspect), 1 / 2, 1))
+                .mult(Transform.translate(aspect, 1, 0));
+        } else {
+            screenToRaster = Transform.scale(width, height, 1)
+                .mult(Transform.scale(1 / 2, 1 / (2 / aspect), 1))
+                .mult(Transform.translate(1, 1 / aspect, 0));
+        }
         return screenToRaster.inverse();
     }
 
