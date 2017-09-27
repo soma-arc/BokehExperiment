@@ -75,9 +75,9 @@ export default class Transform {
      */
     applyToVec(v) {
         const e = this.m.elem;
-        return new Vec3(e[0] * v.x + e[4] * v.y + e[8] * v.z + e[12],
-                        e[1] * v.x + e[5] * v.y + e[9] * v.z + e[13],
-                        e[2] * v.x + e[6] * v.y + e[10] * v.z + e[14]);
+        return new Vec3(e[0] * v.x + e[4] * v.y + e[8] * v.z,
+                        e[1] * v.x + e[5] * v.y + e[9] * v.z,
+                        e[2] * v.x + e[6] * v.y + e[10] * v.z);
     }
 
     /**
